@@ -9,7 +9,6 @@ const app = fastify({
     logger: true
 })
 
-
 app.register(payableRoutes)
 app.register(assignorRoutes)
   

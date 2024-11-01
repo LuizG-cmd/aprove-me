@@ -2,7 +2,8 @@ import { z } from 'zod'
 
 
 const payableSchema = z.object({
-        value: z.number().max(30)
+        value: z.number(),
+        simpledate: z.string()
 })
 
 export default payableSchema

@@ -7,6 +7,6 @@ const assignorSchema = z.object({
         phone: z.string().max(20),
         name: z.string().max(140),
         value: z.number().max(15),
-})
+}).required()
 
 export default assignorSchema

@@ -6,7 +6,15 @@ import payableSchema from "../dtos/payable.dto"
 
 const payableCreate = async (request: FastifyRequest, reply: FastifyReply) => {
 
-    const {value} = payableSchema.parse(request.body)
+    const {value, simpledate} = payableSchema.parse(request.body)
+
+
+    const formatnumber = async (simpledate: string) => {
+        const newdate = new Date(simpledate)
+        return newdate
+    }
+
+    const emissionDate = await formatnumber(simpledate)
   
     if(!value)
     {
@@ -16,8 +24,13 @@ const payableCreate = async (request: FastifyRequest, reply: FastifyReply) => {
     }else{
       const result = await prismaRepositorie.payable.create({
         data:{
-          value
-          }
+          value,
+          emissionDate
+        }
+      })
+
+      reply.send({
+        result
       })
     }
 }

@@ -1,7 +1,5 @@
 import fastify from 'fastify'
 
-import  prismaRepositorie  from "./lib/prisma"
-
 import  { payableRoutes }  from './modules/payable/routes/payable.route'
 import  { assignorRoutes } from "./modules/assignor/routes/assignor.route"
 

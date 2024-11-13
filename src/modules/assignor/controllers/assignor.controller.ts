@@ -9,7 +9,7 @@ import assignorSchema from "../dtos/assignor.dto";
 const assignorCreate = async (request: FastifyRequest, reply: FastifyReply) => {
 
 
-      const {document, email, phone, name, value} = assignorSchema.parse(request.body)
+      const {document, email, phone, name} = assignorSchema.parse(request.body)
     
       if(!document)
       {
@@ -41,13 +41,7 @@ const assignorCreate = async (request: FastifyRequest, reply: FastifyReply) => {
           document,
           email,
           phone,
-          name,
-          payable:{
-            create:[{
-              value
-            }
-            ]
-          }
+          name
         }
       })
     

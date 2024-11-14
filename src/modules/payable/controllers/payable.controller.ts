@@ -7,12 +7,12 @@ import payableSchema from "../dtos/payable.dto";
 const payableCreate = async (request: FastifyRequest, reply: FastifyReply) => {
   const { value, simpledate, assignorId } = payableSchema.parse(request.body);
 
-  const formatnumber = async (simpledate: string) => {
+  const formatdate = async (simpledate: string) => {
     const newdate = new Date(simpledate);
     return newdate;
   };
 
-  const emissionDate = await formatnumber(simpledate);
+  const emissionDate = await formatdate(simpledate);
 
   console.log(emissionDate)
 

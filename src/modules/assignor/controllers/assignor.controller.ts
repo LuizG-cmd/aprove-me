@@ -4,13 +4,23 @@ import { FastifyReply, FastifyRequest } from "fastify";
 
 import assignorSchema from "../dtos/assignor.dto";
 
-
+export type assignorzin = {
+  document: string,
+  email: string,
+  phone: string,
+  name: string
+}
 
 const assignorCreate = async (request: FastifyRequest, reply: FastifyReply) => {
 
 
       const {document, email, phone, name} = assignorSchema.parse(request.body)
     
+      if(Object.keys(request.body).length === 0){
+        reply.status(400).send({
+        message:"Os campos nao podem ser nulos"
+      })
+    }
       if(!document)
       {
         reply.status(400).send({
@@ -52,8 +62,14 @@ const assignorCreate = async (request: FastifyRequest, reply: FastifyReply) => {
 }
 
 const assignorFind = async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.query as {
+    const { id } = request.params as {
         id: string
+    }
+
+    if (!id){
+      reply.status(400).send({
+        message:"not type id"
+      })
     }
 
     const result = await prismaRepositorie.assignor.findFirst({
@@ -70,7 +86,7 @@ const assignorFind = async (request: FastifyRequest, reply: FastifyReply) => {
       }
     
       reply.status(200).send({
-        payable:{
+        assignor:{
           result
         }
       })
@@ -85,6 +101,20 @@ const assignorUpdate = async (request: FastifyRequest, reply: FastifyReply) =>{
     phone?: string,
     name?: string
   }
+
+  console.log(typeof request.body)
+
+  if(Object.keys(request.body).length === 0){
+      reply.status(400).send({
+      message:"Os campos nao podem ser nulos"
+    })
+  }
+
+  if(!id){
+    reply.status(400).send({
+      message: "Id not type"
+    })
+}
 
 
   const assignorFinded = await prismaRepositorie.assignor.update({
@@ -104,8 +134,17 @@ const assignorUpdate = async (request: FastifyRequest, reply: FastifyReply) =>{
     "Payable altered successfull", assignorFinded})
 }
 
+const allAssignors = async (request: FastifyRequest, reply: FastifyReply) => {
+  const result = await prismaRepositorie.assignor.findMany()
+
+  reply.status(200).send({
+    assignors: result
+  })
+}
+
 export default {
     assignorCreate,
     assignorFind,
-    assignorUpdate
+    assignorUpdate,
+    allAssignors
 }

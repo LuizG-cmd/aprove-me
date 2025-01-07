@@ -76,8 +76,20 @@ const payableUpdate = async (request: FastifyRequest, reply: FastifyReply) => {
   reply.send({ message: "Payable altered successfull", payableFinded });
 };
 
+const allPayables = async (request: FastifyRequest, reply: FastifyReply) => {
+  const payables = await prismaRepositorie.payable.findMany()
+
+  reply.status(200).send({
+    Dividas:{
+      payables
+    }
+  })
+}
+
+
 export default {
   payableCreate,
   payableFind,
   payableUpdate,
+  allPayables
 };

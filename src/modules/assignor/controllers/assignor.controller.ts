@@ -4,12 +4,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 
 import assignorSchema from "../dtos/assignor.dto";
 
-export type assignorzin = {
-  document: string,
-  email: string,
-  phone: string,
-  name: string
-}
+import assignorServices from "../services/assignor.services";
 
 const assignorCreate = async (request: FastifyRequest, reply: FastifyReply) => {
 
@@ -21,6 +16,8 @@ const assignorCreate = async (request: FastifyRequest, reply: FastifyReply) => {
         message:"Os campos nao podem ser nulos"
       })
     }
+    console.log(phone.length)
+    
       if(!document)
       {
         reply.status(400).send({
@@ -46,14 +43,16 @@ const assignorCreate = async (request: FastifyRequest, reply: FastifyReply) => {
         })
       }
     
-      const result = await prismaRepositorie.assignor.create({
+      /*const result = await prismaRepositorie.assignor.create({
         data:{
           document,
           email,
           phone,
           name
         }
-      })
+      })*/
+
+      const result = await assignorServices.assignorCreateService(name, email, phone, document)
     
       reply.status(200).send({
         message: "Assignor created successfully", 
@@ -62,7 +61,7 @@ const assignorCreate = async (request: FastifyRequest, reply: FastifyReply) => {
 }
 
 const assignorFind = async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as {
+    const { id } = request.query as {
         id: string
     }
 
@@ -72,11 +71,7 @@ const assignorFind = async (request: FastifyRequest, reply: FastifyReply) => {
       })
     }
 
-    const result = await prismaRepositorie.assignor.findFirst({
-        where:{
-            id
-        }  
-    })
+    const result = await assignorServices.assignorFindService(id)
 
 
     if (!result){
@@ -99,7 +94,7 @@ const assignorUpdate = async (request: FastifyRequest, reply: FastifyReply) =>{
     document?: string,
     email?: string,
     phone?: string,
-    name?: string
+    name?: string | undefined
   }
 
   console.log(typeof request.body)
@@ -117,7 +112,7 @@ const assignorUpdate = async (request: FastifyRequest, reply: FastifyReply) =>{
 }
 
 
-  const assignorFinded = await prismaRepositorie.assignor.update({
+  /*const assignorFinded = await prismaRepositorie.assignor.update({
     where:{
       id
     },
@@ -127,7 +122,9 @@ const assignorUpdate = async (request: FastifyRequest, reply: FastifyReply) =>{
       phone,
       name
     }
-  })
+  })*/
+
+    const assignorFinded = await assignorServices.assignorUpdateService(id, name, document, phone, email)
 
 
   reply.send({message:
@@ -138,7 +135,9 @@ const allAssignors = async (request: FastifyRequest, reply: FastifyReply) => {
   const result = await prismaRepositorie.assignor.findMany()
 
   reply.status(200).send({
-    assignors: result
+    assignors:{
+      result
+    } 
   })
 }
 

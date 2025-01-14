@@ -30,4 +30,10 @@ model Payable {
   assignorId   String?
 }
 
+model Users {
+  id      String @id @default(uuid())
+  login   String
+  password String
+}
+
 

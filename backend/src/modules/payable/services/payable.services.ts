@@ -1,3 +1,5 @@
+import { Payable } from "../dtos/payable.dto";
+
 import prismaRepositorie from "../../../lib/prisma";
 
 

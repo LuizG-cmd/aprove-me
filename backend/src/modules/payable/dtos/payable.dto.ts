@@ -1,10 +1,12 @@
 import { z } from 'zod'
 
 
-const payableSchema = z.object({
+const payableCreateSchema = z.object({
         value: z.number(),
         simpledate: z.string(),
         assignorId: z.string()
 }).required()
 
-export default payableSchema
+export type Payable = z.infer<typeof payableCreateSchema>;
+
+export default payableCreateSchema

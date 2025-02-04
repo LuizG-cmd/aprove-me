@@ -2,7 +2,7 @@ import prismaRepositorie from "../../../lib/prisma";
 
 import { FastifyReply, FastifyRequest, FastifySchema } from "fastify";
 
-import assignorSchema, { Assignor } from "../dtos/assignor.dto";
+import assignorCreateSchema, { Assignor } from "../dtos/assignor.dto";
 
 import assignorServices from "../services/assignor.services";
 
@@ -17,7 +17,7 @@ interface User {
 const assignorCreate = async (request: FastifyRequest, reply: FastifyReply) => {
 
 
-      const {document, email, phone, name} = assignorSchema.parse(request.body)
+      const {document, email, phone, name} = assignorCreateSchema.parse(request.body)
     
       if(Object.keys(request.body).length === 0){
         reply.status(400).send({

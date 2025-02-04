@@ -3,15 +3,11 @@ import { Assignor } from "../dtos/assignor.dto";
 import assignorSchema from "../dtos/assignor.dto";
 
 
-const assignorCreateService = async (document: string, name: string, phone: string, email: string): Promise<Assignor> => {
+const assignorCreateService = async (assignorBody: Assignor): Promise<Assignor> => {
 
         const result = prismaRepositorie.assignor.create({
-            data:{
-                document,
-                name,
-                phone,
-                email
-            }
+            data:
+            assignorBody
         })
 
       return result

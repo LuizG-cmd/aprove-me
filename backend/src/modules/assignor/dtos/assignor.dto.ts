@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 
-const assignorSchema = z.object({
+const assignorCreateSchema = z.object({
         document: z.string().max(30),
         email: z.string().max(140),
         phone: z.string().min(8).max(20),
@@ -9,6 +9,6 @@ const assignorSchema = z.object({
 }).required()
 
 
-export type Assignor = z.infer<typeof assignorSchema>
+export type Assignor = z.infer<typeof assignorCreateSchema>
 
-export default assignorSchema
+export default assignorCreateSchema

@@ -34,7 +34,8 @@ const jwtPlugin = async (app: FastifyInstance) => {
           }
         )
 
-        reply.send({message:"Usuario criado com sucesso, guarde seu token",
+        reply.send({
+          /*message: "User create, save the token",*/
           token
         })
      

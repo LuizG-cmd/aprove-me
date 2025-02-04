@@ -1,37 +1,42 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import prismaRepositorie from "../../../lib/prisma";
 
-const authAssignor = async (request: FastifyRequest, reply: FastifyReply) => {
+import userService from "../services/auth.service";
+
+import userSchema from "../dtos/auth.dto";
+
+
+
+const createUser = async (request: FastifyRequest, reply: FastifyReply) => {
+
+  const { login, password } = userSchema.parse(request.body);
+
+  const newUser = await userService.registerUser(login, password)
+
+  if (!newUser){
+    reply.send({
+      message: "Not create user"
+    })
+  }
+
+};
+
+const authUser = async (request: FastifyRequest, reply: FastifyReply) => {
   const { login, password } = request.body as {
      login: string,
      password: string
   };
 
-  const findUser = await prismaRepositorie.users.findMany({
-     where:{
-          login
-     }
-  })
+  const findUser = await userService.loginUser(login, password)
 
   if (findUser !== undefined) {
     reply.status(400).send("Usuario não localizado");
   }
 
-  reply.send(findUser);
 };
 
-const createUser = async (request: FastifyRequest, reply: FastifyReply) => {
-  const { login, password } = request.body;
-
-  const newUser = await prismaRepositorie.users.create({
-    data: {
-      login,
-      password,
-    },
-  });
-};
 
 export default {
-  authAssignor,
+  authUser,
   createUser,
 };

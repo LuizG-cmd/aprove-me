@@ -5,6 +5,6 @@ import { FastifyInstance } from "fastify";
 
 
 export const authRoutes = (app: FastifyInstance) => {
-    app.post("/integrations/auth", authController.authAssignor)
-    app.post("/integrations/login", {preHandler: app.createtoken}, authController.createUser)
+    app.post("/integrations/login", {preHandler: app.authenticate}, authController.authUser)
+    app.post("/integrations/register", {onResponse: app.createtoken}, authController.createUser)
 }

@@ -7,12 +7,12 @@ import fastifyJwt from "@fastify/jwt";
 
 declare module 'fastify' {
   interface FastifyInstance {
-      authenticate: (request: FastifyRequest, reply: FastifyReply) => Promise<void>;
-      createtoken: (request: FastifyRequest, reply: FastifyReply) => Promise<void>
+      authenticate: (request: FastifyRequest, reply: FastifyReply) => Promise<string>;
+      createtoken: (login: string, password: string) => Promise<string>
   }
 }
 
-const JWT_SECRET = process.env.JWT_SECRET_KEY || "TESTE"
+const JWT_SECRET = process.env.JWT_SECRET_KEY || process.env.JWT_ALTERNATIVE_KEY
 
 const jwtPlugin = async (app: FastifyInstance) => {
 
@@ -22,24 +22,18 @@ const jwtPlugin = async (app: FastifyInstance) => {
 
 
 
-    app.decorate('createtoken', async function(request: FastifyRequest, reply: FastifyReply){
-  
-
+      app.decorate('createtoken', async (login: string, password: string) => {
         const token = app.jwt.sign(
           {
-            object: request.body
+            object: login,
+            password,
           },
           {
-            expiresIn: "24h"
+            expiresIn: '24h',
           }
-        )
-
-        reply.send({
-          /*message: "User create, save the token",*/
-          token
-        })
-     
-    })
+        );
+        return token;
+      });
 
 
     app.decorate('authenticate', async function(request: FastifyRequest, reply: FastifyReply) {

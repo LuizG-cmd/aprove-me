@@ -1,10 +1,8 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import prismaRepositorie from "../../../lib/prisma";
 
 import userService from "../services/auth.service";
 
 import userSchema from "../dtos/auth.dto";
-
 
 
 const createUser = async (request: FastifyRequest, reply: FastifyReply) => {
@@ -13,15 +11,22 @@ const createUser = async (request: FastifyRequest, reply: FastifyReply) => {
 
   const newUser = await userService.registerUser(login, password)
 
+  const token = await request.server.createtoken(login,password)
+
+  reply.send({
+    token: token
+  })
+
   if (!newUser){
     reply.send({
-      message: "Not create user"
+      message: "Not create user",
     })
   }
 
 };
 
 const authUser = async (request: FastifyRequest, reply: FastifyReply) => {
+
   const { login, password } = request.body as {
      login: string,
      password: string
@@ -29,9 +34,16 @@ const authUser = async (request: FastifyRequest, reply: FastifyReply) => {
 
   const findUser = await userService.loginUser(login, password)
 
-  if (findUser !== undefined) {
+  /*if (findUser !== undefined) {
     reply.status(400).send("Usuario não localizado");
-  }
+  }*/
+
+  reply.send({
+    user:{
+      id: findUser.id,
+      name: findUser.login
+    }
+  })
 
 };
 

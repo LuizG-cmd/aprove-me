@@ -1,10 +1,13 @@
-import FetchAssignor from "@/components/dashboard/page";
+import Dashboard from "./pages/dashboard/page";
+
+import { PayableForm } from "@/components/Form/form";
 
 export default function Home() {
   return (
     <>
     <div>
-      <FetchAssignor/>
+      <PayableForm />
+      <Dashboard/>
     </div>
     </>
   );

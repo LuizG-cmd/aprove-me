@@ -6,7 +6,7 @@ const FetchAssignor = () => {
     const [assignors, setAssignors] = useState([])
 
 
-    const assignorBoladao = () =>
+    const payableBoladao = () =>
     {
         const result = fetch("http://localhost:8080/integrations/payable")
         .then((res) => res.json())
@@ -18,7 +18,7 @@ const FetchAssignor = () => {
     }
 
     useEffect(()=>{
-        assignorBoladao
+        payableBoladao
     }, [])
 
 

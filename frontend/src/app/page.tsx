@@ -1,5 +1,3 @@
-import Dashboard from "./pages/dashboard/page";
-
 import { PayableForm } from "@/components/Form/form";
 
 export default function Home() {
@@ -7,7 +5,6 @@ export default function Home() {
     <>
     <div>
       <PayableForm />
-      <Dashboard/>
     </div>
     </>
   );

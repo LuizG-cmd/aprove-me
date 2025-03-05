@@ -9,6 +9,11 @@ const assignorCreateSchema = z.object({
 }).required()
 
 
+export type AssignorCreateType = z.infer<typeof assignorCreateSchema>
+
 export type Assignor = z.infer<typeof assignorCreateSchema>
+
+
+
 
 export default assignorCreateSchema

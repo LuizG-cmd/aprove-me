@@ -4,6 +4,8 @@ import { FastifyRequest, FastifyReply } from "fastify";
 
 import payableSchema from "../dtos/payable.dto";
 
+import payableUpdateSchema from "../dtos/update.payable.dto";
+
 import payableServices from "../services/payable.services";
 
 const payableCreate = async (request: FastifyRequest, reply: FastifyReply) => {
@@ -53,11 +55,15 @@ const payableFind = async (request: FastifyRequest, reply: FastifyReply) => {
 };
 
 const payableUpdate = async (request: FastifyRequest, reply: FastifyReply) => {
-  const { id } = request.query as { id: string };
+  const { id } = payableUpdateSchema.parse(request.query) 
 
-  const { value } = request.body as {
-    value?: number;
-  };
+  const { value } = payableUpdateSchema.parse(request.body) 
+ 
+  if(!id){
+    reply.status(400).send({
+      message:"Id not type"
+    })
+  }
 
   const payableFinded = await payableServices.updatePayableCreateService(id, value)
 

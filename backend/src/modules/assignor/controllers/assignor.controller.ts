@@ -1,17 +1,12 @@
-import prismaRepositorie from "../../../lib/prisma";
+import {FastifyReply, FastifyRequest} from "fastify";
 
-import { FastifyReply, FastifyRequest, FastifySchema } from "fastify";
+import assignorCreateSchema from "../dtos/assignor.dto";
 
-import assignorCreateSchema, { Assignor } from "../dtos/assignor.dto";
+import  assignorUpdateSchema from "../dtos/update.assignor.dto";
 
 import assignorServices from "../services/assignor.services";
 
-interface User {
-  document: string,
-  email: string,
-  phone: string,
-  name: string
-}
+
 
 
 const assignorCreate = async (request: FastifyRequest, reply: FastifyReply) => {
@@ -50,16 +45,8 @@ const assignorCreate = async (request: FastifyRequest, reply: FastifyReply) => {
         })
       }
     
-      /*const result = await prismaRepositorie.assignor.create({
-        data:{
-          document,
-          email,
-          phone,
-          name
-        }
-      })*/
 
-      const result = await assignorServices.assignorCreateService(name, email, phone, document)
+      const result = await assignorServices.assignorCreateService({name, document, email, phone})
     
       reply.status(200).send({
         message: "Assignor created successfully", 
@@ -97,15 +84,10 @@ const assignorFind = async (request: FastifyRequest, reply: FastifyReply) => {
 const assignorUpdate = async (request: FastifyRequest, reply: FastifyReply) =>{
   const { id } = request.query as { id: string }
 
-  const { document, email, phone, name } = request.body as {
-    document?: string,
-    email?: string,
-    phone?: string,
-    name?: string
-  }
+  const { document, email, phone, name } =  assignorUpdateSchema.parse(request.body)
 
  
-  if(Object.values(request.body).length === 0){
+  if(Object.values(request).length === 0){
       reply.status(400).send({
       message:"Os campos nao podem ser nulos"
     })

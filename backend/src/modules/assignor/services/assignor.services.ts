@@ -1,9 +1,9 @@
 import prismaRepositorie from "../../../lib/prisma";
-import { Assignor } from "../dtos/assignor.dto";
-import assignorSchema from "../dtos/assignor.dto";
+import { AssignorCreateType, Assignor } from "../dtos/assignor.dto";
 
 
-const assignorCreateService = async (assignorBody: Assignor): Promise<Assignor> => {
+
+const assignorCreateService = async (assignorBody: AssignorCreateType): Promise<Assignor> => {
 
         const result = prismaRepositorie.assignor.create({
             data:
@@ -33,7 +33,9 @@ const assignorUpdateService = async (id: string, document: string, email: string
 
 
     const result = await prismaRepositorie.assignor.update({
-        where:{id} ,
+        where:{
+            id
+        },
         data:{
             document,
             email,
